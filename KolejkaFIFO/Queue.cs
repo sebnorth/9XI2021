@@ -33,13 +33,38 @@ namespace KolejkaFIFO
                 throw new InvalidOperationException("Kolejka jest pełna");
             }
 
-            // Jeśli indeks osoby na końcu kolejki(q.Last) jest równy indeksowi końca kolejki(9) to…
+          
 
             // Jeśli indeks osoby na końcu kolejki(q.Last) jest równy -1
+            if (q.Last == -1)
+            {
+
+                q.Kolejka[0] = os;
+                q.Last = 0;
+                q.First = 0;
+            }
+
+            else
+            {
+
+                // Jeśli indeks osoby na końcu kolejki(q.Last) jest równy indeksowi końca kolejki(9) to…
+                if (q.Last == q.Kolejka.Length - 1)
+                {
+                    q.Kolejka[0] = os;
+                    q.Last = 0;
+                }
+
+                if (q.Last < q.Kolejka.Length - 1)
+                {
+                    q.Last++;
+                    q.Kolejka[q.Last] = os;
+                }
+
+            }
 
             // Jeśli indeks osoby na końcu kolejki(q.Last) jest mniejszy niż indeks końca kolejki(9) to…
 
-
+            
         }
 
         public static bool IsEmpty(Queue q)
@@ -47,14 +72,43 @@ namespace KolejkaFIFO
             return q.First == -1;
         }
 
-        //public static Osoba Dequeue(ref Queue q)
-        //{
-        //    if (Queue.IsEmpty(q))
-        //        throw new InvalidOperationException("Kolejka jest pusta");
-        //    Osoba tmp;
-        //    // TODO
-        //    return tmp;
-        //}
+        public static Osoba Dequeue(ref Queue q)
+        {
+            if (Queue.IsEmpty(q))
+                throw new InvalidOperationException("Kolejka jest pusta");
+            Osoba tmp = q.Kolejka[q.First];
+            // TODO
+
+            // jeśli jest dokładniej jeden klient 
+            if (Queue.GetLength(q) == 1)
+            {
+                q.First = -1;
+                q.Last = -1;
+            }
+
+            else
+            {
+
+                // jeśli jest więcej niż jeden klient (-> Queue.GetLength(q) > 1 ) i q.First nie jest końcem tablicy
+
+                if (Queue.GetLength(q) > 1 && q.First < q.Kolejka.Length - 1)
+                {
+                    q.First++;
+                }
+
+                // jeśli jest więcej niż jeden klient (-> Queue.GetLength(q) > 1 ) i q.First jest końcem tablicy
+
+                if (Queue.GetLength(q) > 1 && q.First == q.Kolejka.Length - 1)
+                {
+                    q.First = 0;
+                }
+
+            }
+      
+
+
+            return tmp;
+        }
 
         public static void Clear(ref Queue q)
         {
